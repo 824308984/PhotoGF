@@ -1,0 +1,90 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_BehindPage.cshtml";
+}
+
+<div class="page-header">
+    <h1>
+        项目列表
+        <small>
+            <i class="icon-double-angle-right"></i>
+            <select id="proType" style="width:150px"><option value="0">全部</option></select>
+            <a href="AddItem">添加项目</a>
+            <a href="AddItemType">添加分类</a>
+        </small>
+    </h1>
+</div>
+<div class="row">
+    <div class="col-sm-6 widget-container-span ui-sortable">
+        <div class="widget-box transparent">
+            <div class="widget-header">
+                <h4 class="lighter" style="cursor:pointer" onclick="hrf('EditItem?id=[id]')">[title]</h4>
+
+                <div class="widget-toolbar no-border">
+
+                    <a href="#" onclick="del(this)" rel="[id]" data-action="close">
+                        <i class="icon-remove"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="widget-body">
+                <div class="widget-main padding-6 no-padding-left no-padding-right">
+                    [content]
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section header{
+    <script type="text/javascript">
+
+    $(function () {
+        var str = $(".row").html();
+        $(".row").empty();
+        GetList(0);
+        $.post("/ajax/GetProductType", function (data) {
+            $.each(data, function (index, lt) {
+                $("#proType").append('<option value="' + lt.Value + '">' + lt.Name + '</option>');
+            })
+        }, "json");
+        $("#proType").change(function () {
+            GetList($(this).val());
+        })
+        function GetList(id) {
+            $.post("/ajax/GetProductListByType", { productTypeID: id }, function (data) {
+                console.log(data);
+                $(".row").empty();
+                $.each(data, function (index, lt) {
+                    var $html = str.replace("[title]", lt.productTitle).replace("[content]", lt.productIntroduce).replace("[id]", lt.id).replace("[id]", lt.id);
+                    $(".row").append($html);
+                });
+            }, "json");
+        }
+    })
+    function hrf(url)
+    {
+        this.location.href = url;
+    }
+
+    function del(lt)
+    {
+        if (confirm("是否确定删除?"))
+        {
+            $.post("/ajax/DelProduct", { id: $(lt).attr("rel") }, function (data) {
+                if (data=="1") {
+                    $(lt).closest(".col-sm-6").remove();
+                }
+                else {
+                    alert("hava a wrong~~");
+                }
+            }, "json")
+        }
+    }
+    </script>
+
+}

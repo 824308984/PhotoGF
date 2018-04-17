@@ -1,0 +1,63 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_BehindPage.cshtml";
+}
+@if (ViewBag.model != null)
+{
+    <p>
+        首页视频
+        url：
+        <input id="fileUrl" type="text" style="width:800px" value="@ViewBag.model.filePath" readonly="readonly" />
+        <a href="#" onclick="upDate(this)" strGuid="@ViewBag.model.id" rel="0">修改</a>
+        <a href="#" onclick="Del(@ViewBag.model.id)">删除</a>
+    </p>
+}
+@if (ViewBag.model == null)
+{
+    <p>
+        首页视频
+        url：
+        <input id="nPath" type="text" style="width:800px" />
+        <a href="#" onclick="Submit()" rel="0">提交</a>
+    </p>
+}
+@section scripts{
+    <script type="text/javascript">
+        Del = function (id) {
+            $.post("/ajax/delmovie", { id: id }, function (data) {
+                if (data.flag) {
+                    alert("删除成功");
+
+                    window.location.reload();
+                }
+            }, "json")
+        }
+        upDate = function (lt) {
+            if ($(lt).attr("rel") == 0) {
+                $(lt).prev("input").attr("readonly", false);
+                $(lt).text("提交");
+                $(lt).attr("rel", 1);
+            }
+            else {
+                $.post("/ajax/UpdataIndexVideo", { path: $(lt).prev("input").val() }, function (data) {
+                    if (data == "1") {
+                        $(lt).prev("input").attr("readonly", true);
+                        $(lt).text("修改");
+                        $(lt).attr("rel", 0);
+                        alert("The path is modified!");
+                    }
+                    else
+                        alert("The video have a question!!");
+                }, "json")
+
+            }
+        }
+        Submit = function () {
+            $.post("/ajax/UpdataIndexVideo", { path: $("#nPath").val() }, function (data) {
+                if (data=="1") {
+                    window.location.reload();
+                }
+            }, "json")
+        }
+    </script>
+}

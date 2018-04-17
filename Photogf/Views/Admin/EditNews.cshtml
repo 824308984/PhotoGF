@@ -1,0 +1,58 @@
+﻿@{
+    Layout = "~/Views/Shared/_BehindPage.cshtml";
+}
+@section scripts{
+    <script src="~/Scripts/webuploader/webuploader.js"></script>
+    <script src="~/Scripts/webuploader/powerWebUpload.js"></script>
+    <script src="~/Scripts/kindeditor/kindeditor-all-min.js"></script>
+    <script src="~/Scripts/kindeditor/lang/zh-CN.js"></script>
+}
+@section styles{
+    <link href="~/Scripts/webuploader/webuploader.css" rel="stylesheet" />
+    <link href="~/Scripts/kindeditor/themes/default/default.css" rel="stylesheet" />
+}
+<table style="text-align:center">
+    <tr style="height:50px">
+        <td width="100px">标题:</td>
+        <td style="text-align:left"><input id="title" value="@ViewBag.model.Title" /></td>
+    </tr>
+    <tr style="height:50px">
+        <td>内容描述：</td>
+        <td style="text-align:left"><textarea id="content" cols="100" rows="8" style="width:700px;height:200px;visibility:hidden;">@ViewBag.model.Content</textarea></td>
+    </tr>
+
+    <tr style="height:50px">
+        <td colspan="2">
+            <input type="button" id="sub" value="提交" />
+        </td>
+    </tr>
+</table>
+
+@section header{
+    <script type="text/javascript">
+        $(function () {
+            var editor;
+            KindEditor.ready(
+                function (K) {
+                    editor = K.create('#content', {
+                        allowFileManager: false,
+                        width: '700px;',
+                        height: '450px;'
+                    });
+                });
+
+            $("#sub").click(function () {
+                editor.sync();
+                var content = encodeURI($("#content").val());
+
+                $.post("/ajax/EditNews", {id:@ViewBag.model.id, Title: $("#title").val(), Content: content }, function (data) {
+                    if (data == "1")
+                        window.location.href = "/admin/NewsManager";
+                    else
+                        alert(data);
+                })
+            })
+        })
+    </script>
+}
+

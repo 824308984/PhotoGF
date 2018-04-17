@@ -1,0 +1,123 @@
+﻿
+@{
+    /**/
+
+    Layout = "~/Views/Shared/_BehindPage.cshtml";
+}
+
+@section styles{
+
+}
+@section scripts{
+    <script src="~/Scripts/imgshow/jquery.poptrox.min.js"></script>
+}
+<div class="page-header">
+    <h1>
+        文件管理
+        <small>
+            <i class="icon-double-angle-right"></i>
+            <select id="proType" style="width:150px"><option value="-1">全部</option><option value="1">图片</option><option value="2">视频</option><option value="3">GIF图片</option></select>
+        </small>
+    </h1>
+</div>
+
+<div class="row" id="gallery">
+</div>
+
+
+@section header{
+    <script type="text/javascript">
+        String.prototype.stripHTML = function () {
+            var reTag = /<(?:.|\s)*?>/g;
+            return this.replace(reTag, "");
+        }
+        $(function () {
+            $("#proType").change(function () {
+                bind($(this).val());
+            })
+            function bind(id) {
+                var divEnd = '</div>';
+                //获取大类下所有产品
+                $.post("/ajax/GetAllProduct", { productTypeID: id }, function (data) {
+                    $(".row").empty();
+                    console.log(data);
+                    $.each(data, function (index, lt) {
+                        var str = appendTitle(lt.Title);
+                        $.each(lt.list, function (index1, item) {
+                            var types = 0;
+                            var introduce = decodeURI(item.fileContent).stripHTML();
+                            if (introduce.length > 30)
+                                introduce = introduce.substring(0, 30) + "..";
+                            var $content = "<ul style='list-style:none;margin:0;'><li style='display:inline;margin-left: 5%; '>[fileName]</li><li style='display:inline;margin-left: 5%;'>" + introduce + "</li><li style='display:inline;margin-left: 5%;'>" + item.fileType + "</li></ul>";
+                            var fileName = item.fileName;
+                            if (item.fileType == "1") {
+                                types = 1;
+                                fileName = '<a href="' + item.filePath + '"><img src="#" alt="" title = "' + item.fileName + '" style="display:none"/>' + item.fileName + '</a>';
+                                console.log(fileName);
+                            }
+                            if (item.fileType == "2") {
+                                fileName = '<a href="' + item.filePath + '" data-poptrox="iframe,600x400"><img src="#" alt="" title="' + item.fileName + '" style="display:none"/>' + item.fileName + '</a>';
+                                types = 2;
+                            }
+                            if (item.fileType == "3") {
+                                types = 3;
+                                fileName = '<a href="' + item.filePath + '"><img src="#" alt="" title = "' + item.fileName + '" style="display:none"/>' + item.fileName + '</a>';
+                            }
+
+                            $content = $content.replace('[fileName]', fileName);
+                            str += appendContent(item.id, $content, types);
+                        })
+                        str += divEnd;
+                        $(".row").append(str);
+                    });
+                    $(".close").click(function () {
+                        var div = $(this).closest("div");
+                        if (confirm("是否删除该资源?")) {
+                            $.post("/ajax/DelFiles", { id: div.attr("fileid") }, function (data) {
+                                if (data=="1")
+                                    div.fadeOut("slow");
+                                else
+                                    alert(data);
+                            });
+                        }
+                    })
+                    $('#gallery').poptrox({
+                        usePopupCaption: true
+                    });
+
+                }, "json");
+            }
+            bind(-1);
+        })
+        function appendTitle(title) {
+            var $html = '<div class="col-sm-6"><h3 class="header smaller lighter green"><i class="icon-bullhorn"></i>[title]</h3 >';
+
+            $html = $html.replace('[title]', title);
+            return $html;
+        }
+        function appendContent(id, content, stype) {
+            var $htmlR = '<div class="alert alert-danger" fileid="[id]"><button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>[content]</div>';
+            var $htmlY = '<div class="alert alert-warning" fileid="[id]"><button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>[content]</div>';
+            var $htmlG = '<div class="alert alert-info" fileid="[id]"><button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>[content]</div>';
+            var $htmlB = '<div class="alert alert-info" fileid="[id]"><button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>[content]</div>';
+            var $content = "";
+            switch (stype) {
+                case 1:
+                    $content = $htmlR.replace('[content]', content).replace("[id]", id);
+                    break;
+                case 2:
+                    $content = $htmlY.replace('[content]', content).replace("[id]", id);
+                    break;
+                case 3:
+                    $content = $htmlG.replace('[content]', content).replace("[id]", id);
+                    break;
+                case 4:
+                    $content = $htmlB.replace('[content]', content).replace("[id]", id);
+                    break;
+                default:
+                    return;
+            }
+            return $content;
+        }
+    </script>
+}

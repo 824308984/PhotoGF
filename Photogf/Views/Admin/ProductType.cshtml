@@ -1,0 +1,51 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_BehindPage.cshtml";
+}
+<div class="page-header">
+    <h1>
+        项目分类管理
+    </h1>
+    <small>
+        <i class="icon-double-angle-right"></i>
+        <a href="AddItem">添加项目</a>
+        <a href="AddItemType">添加分类</a>
+    </small>
+</div>
+<div class="row">
+
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            var $html = '<div class="col-sm-12">  <h3 class="header smaller lighter green"><i class="icon-bullhorn"></i>项目管理</h3>';
+            var $htmlB = '<div class="alert alert-info" itemid="[id]"><button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>[itemName]</div>';
+            $.post("/ajax/GetproductType", function (data) {
+                var $html = '<div class="col-sm-12">  <h3 class="header smaller lighter green"><i class="icon-bullhorn"></i>项目管理</h3>';
+                var $htmlB = '<div class="alert alert-info" itemid="[id]"><button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>[itemName]</div>';
+                $.each(data, function (index, lt) {
+                    $html += $htmlB.replace("[id]", lt.Value).replace("[itemName]", '<a href="EditItemType?id=' + lt.Value + '">' + lt.Name + '</a>');
+                })
+                $html += "</div>";
+                $(".row").append($html);
+                close();
+            }, "json")
+        })
+        function close() {
+            $(".close").click(function () {
+                var $div = $(this).closest("div");
+                if (confirm("是否删除分类?")) {
+                    $.post("/ajax/DelItemType", { id: $div.attr("itemid") }, function (data) {
+                        if (data=="1")
+                            $div.fadeOut("slow");
+                        else
+                            alert(data);
+                    });
+
+                }
+            })
+        }
+    </script>
+
+}

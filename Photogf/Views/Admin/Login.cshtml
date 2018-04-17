@@ -1,0 +1,127 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>登录页面</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/assets/css/font-awesome.min.css" />
+
+
+
+    <link rel="stylesheet" href="/assets/css/ace.min.css" />
+    <link rel="stylesheet" href="/assets/css/ace-rtl.min.css" />
+
+    <script src="~/Scripts/angular.min.js"></script>
+</head>
+
+<body class="login-layout">
+    <div class="main-container">
+        <div class="main-content">
+            <div class="row">
+                <div class="col-sm-10 col-sm-offset-1">
+                    <div class="login-container">
+                        <div class="center">
+                            <h1>
+                                <i class="icon-leaf green"></i>
+                                <span class="red">Ace</span>
+                                <span class="white">Application</span>
+                            </h1>
+                            <h4 class="blue">楚翔摄影</h4>
+                        </div>
+
+                        <div class="space-6"></div>
+
+                        <div class="position-relative">
+                            <div id="login-box" class="login-box visible widget-box no-border">
+                                <div class="widget-body">
+                                    <div class="widget-main">
+                                        <h4 class="header blue lighter bigger">
+                                            <i class="icon-coffee green"></i>
+                                            登录
+                                        </h4>
+
+                                        <div class="space-6"></div>
+
+                                        <form ng-app="myApp" ng-controller="validateCtrl" name="myForm" novalidate>
+                                            <fieldset>
+                                                <label class="block clearfix">
+                                                    <span class="block input-icon input-icon-right">
+                                                        <input type="text" class="form-control" placeholder="Username" name="user" ng-model="user" required />
+                                                        <i class="icon-user"></i>
+                                                    </span>
+                                                    <span style="color:red" ng-show="myForm.user.$dirty && myForm.user.$invalid">
+                                                        <span ng-show="myForm.user.$error.required">用户名是必须的。</span>
+                                                    </span>
+                                                </label>
+
+                                                <label class="block clearfix">
+                                                    <span class="block input-icon input-icon-right">
+                                                        <input type="password" class="form-control" placeholder="Password" name="password" ng-model="password" required />
+                                                        <i class="icon-lock"></i>
+                                                    </span>
+                                                    <span style="color:red" ng-show="myForm.password.$dirty && myForm.password.$invalid">
+                                                        <span ng-show="myForm.password.$error.required">密码是必须的。</span>
+
+                                                    </span>
+                                                </label>
+
+                                                <div class="space"></div>
+
+                                                <div class="clearfix">
+
+
+                                                    <button type="submit" class="width-35 pull-right btn btn-sm btn-primary" ng-click="enter()" ng-disabled="myForm.user.$dirty && myForm.user.$invalid || myForm.password.$dirty && myForm.password.$invalid">
+                                                        <i class="icon-key"></i>
+                                                        登录
+                                                    </button>
+                                                </div>
+
+                                                <div class="space-4"></div>
+                                            </fieldset>
+                                        </form>
+
+
+                                    </div><!-- /widget-main -->
+
+
+                                </div><!-- /widget-body -->
+                            </div><!-- /login-box -->
+
+
+                        </div><!-- /position-relative -->
+                    </div>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div>
+    </div><!-- /.main-container -->
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('validateCtrl', function ($scope, $http) {
+            $scope.user = 'admin';
+            $scope.enter = function () {
+                $http({
+                    method: "POST",
+                    url: "/ajax/login",
+                    params: { 'userName': $scope.user, 'password': $scope.password }
+                }).then(function (data) {
+                    if (data.data == "0") {
+                        alert("The UserName or Password is wrong!");
+                    }
+                    else
+                        this.location.href = "/Admin/Index";
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+

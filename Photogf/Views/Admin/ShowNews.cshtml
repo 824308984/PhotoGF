@@ -1,0 +1,10 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_BehindPage.cshtml";
+}
+
+<h3 style="text-align:center">@ViewBag.model.Title</h3>
+<p style="text-align:right">@ViewBag.model.Author &nbsp;&nbsp;@ViewBag.model.LastTime</p>
+<div>
+    @Html.Raw(ViewBag.model.Content)
+</div>

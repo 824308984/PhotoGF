@@ -1,0 +1,73 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>新闻中心</title>
+    <link rel="alternate icon" type="image/png" href="/viewAbout/images/favicon.ico">
+    <link rel="stylesheet" href="/viewAbout/css/iconfont.css" type="text/css" />
+    <link rel="stylesheet" href="/viewAbout/css/app.css" type="text/css" />
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <div class="header-main">
+                <div class="logo">
+                    <a href="#"><img src="/viewAbout/images/logo.png" alt=""></a>
+                </div>
+                <div class="nav">
+                    <a href="/photogf/Index">首页</a>
+                    <a href="/photogf/NewsList" class="on">新闻中心</a>
+                    <a href="/photogf/about">关于我们</a>
+                    <a href="/photogf/Portfolio">作品案例</a>
+                    <a href="/Photogf/Contact">联系我们</a>
+                </div>
+            </div>
+        </div>
+        <div class="banner5"></div>
+        <div class="container" style="background:url(/viewAbout/images/index-bg.jpg) repeat-y 0 0;">
+            <div class="container-main">
+                <div class="product">
+                    <div class="product-hd text-center">
+                        <img src="/viewAbout/images/title-04.png" alt="新闻中心">
+                        <p>最新新闻尽在这里</p>
+                    </div>
+                    <div class="news">
+                        <ul>
+                            @foreach (var item in ViewBag.NewsList)
+                            {
+                                <li><span style="color:#999; float:right">@item.LastTime</span><a href="/PhotoGF/NewsDetail?id=@item.id">@item.Title</a></li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="page-limit">
+                        <ul>
+                            <li class="active"><a href="javascript:void(0)">1</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="container-main">
+                <div class="custom-us">
+                    <a href="https://wx.qq.com/" target="_blank" class="custom-us-01"></a>
+                    <a href="http://im.qq.com/pcqq/" class="custom-us-02" target="_blank"></a>
+                    <a href="https://weibo.com/" class="custom-us-03" target="_blank"></a>
+                    <a href="http://www.pengyou.com/" class="custom-us-04" target="_blank"></a>
+                </div>
+                <div class="copyright">
+                    电话：0731-8990-3285 &nbsp;&nbsp;地址：湖北省长沙市芙蓉中路新时代广场南栋1025
+                    <br>湘ICP备15006511号-1 &nbsp;&nbsp;版权归长沙楚翔摄影技术有限公司所有
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/viewAbout/js/jquery.min.js"></script>
+</body>
+</html>

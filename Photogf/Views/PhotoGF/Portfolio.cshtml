@@ -1,0 +1,149 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>作品案例</title>
+    <link rel="alternate icon" type="image/png" href="/viewAbout/images/favicon.ico">
+    <link rel="stylesheet" href="/viewAbout/css/iconfont.css" type="text/css" />
+    <link rel="stylesheet" href="/viewAbout/css/app.css" type="text/css" />
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <div class="header-main">
+                <div class="logo">
+                    <a href="#"><img src="/viewAbout/images/logo.png" alt=""></a>
+                </div>
+                <div class="nav">
+                    <a href="/photogf/Index">首页</a>
+                    <a href="/photogf/NewsList">新闻中心</a>
+                    <a href="/photogf/about">关于我们</a>
+                    <a href="/photogf/Portfolio" class="on">作品案例</a>
+                    <a href="/Photogf/Contact">联系我们</a>
+                </div>
+            </div>
+        </div>
+        <div class="banner2"></div>
+        <div class="container" style="background:url(/viewAbout/images/index-bg.jpg) repeat-y 0 0;">
+            <div class="container-main">
+                <div class="product">
+                    <div class="product-hd text-center">
+                        <img src="/viewAbout/images/title-01.png" alt="作品案例">
+                        <p>楚翔影视精品案例</p>
+                    </div>
+                    <div style="margin-bottom:40px; border:2px dashed #eaeaea; padding:20px; background-color:#fff; line-height:26px;">
+                        > 甲方提出所需拍摄内容，以及所预期的效果，还有产品使用方向。<br>
+                        > 公司通过拍摄内容决定拍摄方案，还有拍摄工具，初步报价<br>
+                        > 制定拍摄计划，等待阳光，视频剪辑，后期处理。<br>
+                        > 样片给甲方审核，听取甲方意见，修改，提交终稿
+                    </div>
+                    <div class="product-bd product-sps">
+                        <div class="product-bd-all">
+                            <div class="prouduct-type" id="AllType">
+                                <a href="javascript:void(0)" onclick="GetVideoList(this)" rel="0" class="on">全 部</a>
+
+                            </div>
+                            <div class="product-main" style="width:1200px\0;">
+                                @*<div class="product-list">
+                                        <img src="/viewAbout/images/product-01.jpg" alt="">
+                                        <div class="product-list-sm" style="display:block;">
+                                            <h3 class="text-center">长房集团</h3>
+                                            <p>通过对人物的跟踪，记录一个对城市有梦想的年轻人进入长房工作，实现梦想的故事</p>
+                                            <a href="案例详细页.html" class="iconfont icon-video" title="播放"></a>
+                                        </div>
+                                    </div>*@
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-limit">
+                        <ul id="pages">
+                            <li><a href="javascript:void(0)">1</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="container-main">
+                <div class="custom-us">
+                    <a href="https://wx.qq.com/" target="_blank" class="custom-us-01"></a>
+                    <a href="http://im.qq.com/pcqq/" class="custom-us-02" target="_blank"></a>
+                    <a href="https://weibo.com/" class="custom-us-03" target="_blank"></a>
+                    <a href="http://www.pengyou.com/" class="custom-us-04" target="_blank"></a>
+                </div>
+                <div class="copyright">
+                    电话：0731-8990-3285 &nbsp;&nbsp;地址：湖北省长沙市芙蓉中路新时代广场南栋1025
+                    <br>湘ICP备15006511号-1 &nbsp;&nbsp;版权归长沙楚翔摄影技术有限公司所有
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/viewAbout/js/jquery.min.js"></script>
+    <script>
+        var reson;
+
+        GetVideoList = function (obj) {
+            var id;
+            if (obj != 0) {
+                id = $(obj).attr("rel");
+                $(".on").removeClass();
+                $(obj).addClass("on");
+            }
+            else
+                id = 0;
+
+            $.post("/ajax/GetTopNVideoByProductType", { productTypeID: id, num: 0 }, function (data) {
+                reson = data;
+                fyShow(1);
+            }, "json");
+        }
+        fyShow = function (index) {
+            var pageSize = 8;
+            var pageCount = reson.length;
+            var pageAll = Math.ceil(pageCount / pageSize);
+            var num = pageSize;
+            var pageIndexCount = (index - 1) * 8;
+            if (pageCount == 0)
+                return;
+            if (index == pageAll) {
+                num = pageCount - (index - 1) * 8;
+            }
+            $(".product-main").empty();
+            for (var i = 0; i < num; i++) {
+                var ix = pageIndexCount + i;
+                console.log(reson[ix]);
+                var $html = '<div class="product-list">' +
+                    '<img src= "' + reson[ix].imgUrl + '" alt= "" >' +
+                    '<div class="product-list-sm" style="display:block;">' +
+                    '<h3 class="text-center">' + reson[ix].Title + '</h3>' +
+                    '<p>' + reson[ix].Introduct + '</p>' +
+                    '<a href="/photogf/details/' + reson[ix].id + '" class="iconfont icon-video" title="播放"></a></div></div >';
+
+                $(".product-main").append($html);
+            }
+            $("#pages").empty();
+            for (var i = 1; i <= pageAll; i++) {
+                if (i != index)
+                    $("#pages").append('<li><a href="javascript:void(0)" onclick="fyShow(' + i + ')">' + i + '</a></li>');
+                else
+                    $("#pages").append('<li class="active"><a href="javascript:void(0)" onclick="fyShow(' + i + ')">' + i + '</a></li>');
+            }
+        }
+        $(function () {
+            $.post("/ajax/GetProductType", function (data) {
+                $.each(data.data, function (index, lt) {
+                    $("#AllType").append('<a href="javascript:void(0)" onclick="GetVideoList(this)" rel="' + lt.value + '">' + lt.name + '</a>');
+                });
+                GetVideoList(0);
+            }, "json")
+        })
+    </script>
+</body>
+</html>

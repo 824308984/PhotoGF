@@ -1,0 +1,137 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_BehindPage.cshtml";
+}
+@section scripts{
+    <script src="~/Scripts/webuploader/webuploader.js"></script>
+    <script src="~/Scripts/webuploader/powerWebUpload.js"></script>
+    <script src="~/Scripts/kindeditor/kindeditor-all-min.js"></script>
+    <script src="~/Scripts/kindeditor/lang/zh-CN.js"></script>
+}
+@section styles{
+    <link href="~/Scripts/webuploader/webuploader.css" rel="stylesheet" />
+    <link href="~/Scripts/kindeditor/themes/default/default.css" rel="stylesheet" />
+}
+<table style="text-align:center">
+    <tr style="height:50px">
+        <td width="100px">标题:</td>
+        <td style="text-align:left"><input id="title" /></td>
+    </tr>
+    <tr style="height:50px">
+        <td width="100px">文件类型:</td>
+        <td style="text-align:left">
+            <select id="fileTypes" style="width:150px">
+                <option value="1">图片</option>
+                <option value="2">视频</option>
+            </select>
+        </td>
+    </tr>
+    <tr style="height:50px">
+        <td width="100px">文件上传:</td>
+        <td style="text-align:left">
+            <input type="file" id="fup" />
+        </td>
+    </tr>
+    <tr style="height:50px">
+        <td>产品类：</td>
+        <td style="text-align:left">
+            <select id="productType" style="width:150px">
+                <option value="-1">无</option>
+            </select>
+            <select id="product" style="width:150px">
+                <option value="-1">无</option>
+            </select>
+        </td>
+    </tr>
+    <tr style="height:50px">
+        <td>url:</td>
+        <td style="text-align:left">
+            <input type="text" id="filePathBz" value="" />
+        </td>
+    </tr>
+    <tr style="height:50px">
+        <td>内容描述：</td>
+        <td style="text-align:left"><textarea id="content" cols="100" rows="8" style="width:700px;height:200px;visibility:hidden;"></textarea></td>
+    </tr>
+
+    <tr style="height:50px">
+        <td colspan="2">
+            <input type="button" id="sub" value="提交" />
+        </td>
+    </tr>
+</table>
+
+
+@section header{
+    <script type="text/javascript">
+        $(function () {
+            var editor;
+            $.post("/ajax/GetproductType", function (data) {
+                $.each(data, function (index, lt) {
+                    $("#productType").append('<option value="' + lt.Value + '">' + lt.Name + '</option>');
+                })
+
+            }, "json");
+            $("#productType").change(function () {
+                $("#product").html('<option value="-1">无</option>');
+                $.post("/ajax/GetProductListByType", { productTypeID: $(this).val() }, function (data) {
+                    $.each(data, function (index, lt) {
+                        $("#product").append('<option value="' + lt.id + '">' + lt.productTitle + '</option>');
+                    });
+                }, "json");
+            })
+            KindEditor.ready(
+                function (K) {
+                    editor = K.create('#content', {
+                        allowFileManager: false,
+                        width: '700px;',
+                        height: '450px;'
+                    });
+                });
+            $("#fup").change(function () {
+                var formData = new FormData();
+                var re = "^.*\.(jpg|png|jpeg|gif|bmp)$";
+                var reg = new RegExp(re);
+                if (!reg.test($("#fup")[0].files[0].name)) {
+                    alert("wrong!!");
+                    return;
+                }
+                formData.append("myfile", $("#fup")[0].files[0]);
+                $.ajax({
+                    url: "/ajax/UpLoadByQiniu",
+                    type: "POST",
+                    data: formData,
+                    /**
+                    *必须false才会自动加上正确的Content-Type
+                    */
+                    contentType: false,
+                    /**
+                    * 必须false才会避开jQuery对 formdata 的默认处理
+                    * XMLHttpRequest会对 formdata 进行正确的处理
+                    */
+                    processData: false,
+                    success: function (data) {
+                        //console.log(data.data);
+                        $("#filePathBz").val(data);
+                    }
+                });
+            })
+
+            $("#sub").click(function () {
+                editor.sync();
+                var content = encodeURI($("#content").val());
+                if ($("#filePathBz").val() == undefined || $("#filePathBz").val() == "") {
+                    alert("请选择文件");
+                    return;
+                }
+
+                $.post("/ajax/UploadFile", { filePathBz: $("#filePathBz").val(), fileTitle: $("#title").val(), fileContent: content, fileType: $("#fileTypes :selected").val(), productID: $("#product :selected").val() }, function (data) {
+                    if (data=="1")
+                        window.location.href = "/admin/fileList";
+                    else
+                        alert(data);
+                })
+            })
+        })
+    </script>
+}

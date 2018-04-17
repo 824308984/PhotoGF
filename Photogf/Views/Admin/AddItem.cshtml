@@ -1,0 +1,66 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_BehindPage.cshtml";
+}
+@section scripts{
+    <script src="~/Scripts/kindeditor/kindeditor-all-min.js"></script>
+    <script src="~/Scripts/kindeditor/lang/zh-CN.js"></script>
+}
+@section styles{
+    <link href="~/Scripts/kindeditor/themes/default/default.css" rel="stylesheet" />
+}
+<table>
+    <tr>
+        <td style="text-align:right">项目名称：</td>
+        <td><input style="width:150px" value="" id="productName" /><br /></td>
+    </tr>
+    <tr>
+        <td style="text-align:right">项目分类：</td>
+        <td><select style="width:150px" id="productTypeID"></select></td>
+    </tr>
+    <tr>
+        <td style="text-align:right">项目简述: </td>
+        <td><textarea style="width:450px" value="" id="productIntroduce"></textarea><br /></td>
+    </tr>
+    <tr>
+        <td>项目详述: </td>
+        <td><textarea value="" id="productContent"></textarea><br /></td>
+    </tr>
+    <tr>
+        <td colspan="2" style="text-align:center"><input type="button" id="sub" value="提交"></td>
+    </tr>
+</table>
+@section header{
+    <script type="text/javascript">
+        $(function () {
+            var editor;
+            KindEditor.ready(
+                function (K) {
+                    editor = K.create('#productContent', {
+                        allowFileManager: false,
+                        width: '700px;',
+                        height: '450px;'
+                    });
+                });
+            $.post("/ajax/GetProductType", function (data) {
+                $.each(data, function (index, lt) {
+                    $("#productTypeID").append('<option value="' + lt.Value + '">' + lt.Name + '</option>');
+                })
+
+            }, "json");
+            $("#sub").click(function () {
+                editor.sync();
+                $.post("/ajax/AddProduct", { itemName: $("#productName").val(), proID: $("#productTypeID :selected").val(), proIntroduce: $("#productIntroduce").val(), proContent: encodeURI($("#productContent").val()) }, function (data) {
+                    if (data=="1") {
+                        alert("success");
+                        window.location.href = "ItemList";
+                    }
+                    else
+                        alert("hvae a wrong~~");
+                }, "json");
+
+            })
+        })
+
+    </script>
+}
