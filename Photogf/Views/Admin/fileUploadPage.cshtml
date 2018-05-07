@@ -46,6 +46,7 @@
     <tr style="height:50px">
         <td>url:</td>
         <td style="text-align:left">
+            <p id="ts"></p>
             <input type="text" id="filePathBz" value="" />
         </td>
     </tr>
@@ -89,32 +90,40 @@
                     });
                 });
             $("#fup").change(function () {
-                var formData = new FormData();
-                var re = "^.*\.(jpg|png|jpeg|gif|bmp)$";
-                var reg = new RegExp(re);
-                if (!reg.test($("#fup")[0].files[0].name)) {
-                    alert("wrong!!");
-                    return;
-                }
-                formData.append("myfile", $("#fup")[0].files[0]);
-                $.ajax({
-                    url: "/ajax/UpLoadByQiniu",
-                    type: "POST",
-                    data: formData,
-                    /**
-                    *必须false才会自动加上正确的Content-Type
-                    */
-                    contentType: false,
-                    /**
-                    * 必须false才会避开jQuery对 formdata 的默认处理
-                    * XMLHttpRequest会对 formdata 进行正确的处理
-                    */
-                    processData: false,
-                    success: function (data) {
-                        //console.log(data.data);
-                        $("#filePathBz").val(data);
+                $("#ts").html("图片上传中。。。");
+                try {
+                    var formData = new FormData();
+                    var re = "^.*\.(jpg|png|jpeg|gif|bmp)$";
+                    var reg = new RegExp(re);
+                    if (!reg.test($("#fup")[0].files[0].name)) {
+                        alert("wrong!!");
+                        return;
                     }
-                });
+                    formData.append("myfile", $("#fup")[0].files[0]);
+                    $.ajax({
+                        url: "/ajax/UpLoadByQiniu",
+                        type: "POST",
+                        data: formData,
+                        /**
+                        *必须false才会自动加上正确的Content-Type
+                        */
+                        contentType: false,
+                        /**
+                        * 必须false才会避开jQuery对 formdata 的默认处理
+                        * XMLHttpRequest会对 formdata 进行正确的处理
+                        */
+                        processData: false,
+                        success: function (data) {
+                            //console.log(data.data);
+                            $("#filePathBz").val(data);
+                            $("#ts").val("图片上传完毕");
+                        },error: function (e) {
+                            $("#ts").val("图片上传失败")
+                        }
+                    });
+                } catch (e) {
+                    $("#ts").val("图片上传失败")
+                }
             })
 
             $("#sub").click(function () {
