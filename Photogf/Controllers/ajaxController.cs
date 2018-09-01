@@ -22,12 +22,13 @@ namespace Photogf.Controllers
         {
             if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password))
                 return "0";
-            if (UserName.ToLower() != "admin")
+            Entities dbHelper = new Entities();
+            var user = dbHelper.Manager.FirstOrDefault(db => db.userName == UserName);
+            if (user == null)
                 return "0";
-            if (Password != AppSetting.Admin)
+            if (user.password != common.unity.MD5(Password))
                 return "0";
-            AppSetting.SetKeyValue("token", common.unity.GetTime().ToString());
-            AppSetting.SetKeyValue("host", Request.UserHostAddress);
+            Session["Login"] = user;
             return "1";
         }
 

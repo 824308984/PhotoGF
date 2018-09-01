@@ -51,10 +51,18 @@ namespace Photogf.Controllers
             return View();
         }
 
-        public ActionResult NewsList()
+        public ActionResult NewsList(string id)
         {
+            int index = 1;
+            if (!string.IsNullOrEmpty(id))
+                int.TryParse(id, out index);
+            if (index < 1)
+                index = 1;
+            ViewBag.Index = index;
+
             Entities dbHelper = new Entities();
-            var list = dbHelper.News.ToList();
+            var list = dbHelper.News.OrderByDescending(db => db.LastTime).Skip(index * 10 - 10).Take(10).ToList();
+            ViewBag.Count = dbHelper.News.Count();
             ViewBag.NewsList = list;
             return View();
         }

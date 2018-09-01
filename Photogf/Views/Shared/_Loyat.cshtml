@@ -2,93 +2,46 @@
 <html lang="en" class="no-js">
 <head>
     <title>@ViewBag.Title</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <!-- <link href='http://fonts.useso.com/css?family=Lato:300,400,700,900' rel='stylesheet'
-        type='text/css'> -->
-    <link rel="stylesheet" type="text/css" href="/viewAbout/css/bootstrap.min.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="/viewAbout/css/owl.carousel.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="/viewAbout/css/owl.theme.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="/viewAbout/css/jquery.bxslider.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="/viewAbout/css/magnific-popup.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="/viewAbout/css/font-awesome.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="/viewAbout/css/animate.css" media="screen">
-    @RenderSection("styles", required: false)
-    <!-- REVOLUTION BANNER CSS SETTINGS -->
-    <link rel="stylesheet" type="text/css" href="/viewAbout/css/settings.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/viewAbout/css/style.css" media="screen">
-    <script type="text/javascript" src="/viewAbout/js/jquery.min.js"></script>
-    <script type="text/javascript" src="/viewAbout/js/jquery.migrate.js"></script>
-    <script type="text/javascript" src="/viewAbout/js/owl.carousel.min.js"></script>
-    <script type="text/javascript" src="/viewAbout/js/jquery.magnific-popup.min.js"></script>
-    <script type="text/javascript" src="/viewAbout/js/jquery.bxslider.min.js"></script>
-    <script type="text/javascript" src="/viewAbout/js/jquery.appear.js"></script>
-    <script type="text/javascript" src="/viewAbout/js/jquery.countTo.js"></script>
-    <script type="text/javascript" src="/viewAbout/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/viewAbout/js/jquery.imagesloaded.min.js"></script>
-    <script type="text/javascript" src="/viewAbout/js/jquery.isotope.min.js"></script>
-    <script type="text/javascript" src="/viewAbout/js/retina-1.1.0.min.js"></script>
-    <script type="text/javascript" src="/viewAbout/js/waypoint.min.js"></script>
-    <script type="text/javascript" src="/viewAbout/js/raphael-min.js"></script>
-    <script type="text/javascript" src="/viewAbout/js/DevSolutionSkill.min.js"></script>
-    <!-- SLIDER REVOLUTION 4.x SCRIPTS  -->
-    <script type="text/javascript" src="/viewAbout/js/jquery.themepunch.tools.min.js"></script>
-    <script type="text/javascript" src="/viewAbout/js/jquery.themepunch.revolution.min.js"></script>
-    <script type="text/javascript" src="/viewAbout/js/script.js"></script>
-    @RenderSection("scripts", required: false)
-    @RenderSection("hscripts", required: false)
-    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <link rel="alternate icon" type="image/png" href="/viewAbout/images/favicon.ico">
+    <link rel="stylesheet" href="/viewAbout/css/iconfont.css" type="text/css" />
+    <link rel="stylesheet" href="/viewAbout/css/app.css" type="text/css" />
+    <script src="/viewAbout/js/jquery.min.js"></script>
 </head>
 <body>
-    <!-- Container -->
-    <div id="container" class="vertical-header">
-        <!-- Header
-            ================================================== -->
-        <header class="clearfix">
-            <div class="logo">
-               <a href="/photogf/index"></a>
+    <div class="page">
+        <div class="header">
+            <div class="header-main">
+                <div class="logo">
+                    <a href="#"><img src="/viewAbout/images/logo.png" alt=""></a>
+                </div>
+                <div class="nav">
+                    <a href="/photogf/Index" class="@(ViewBag.Title=="首页"?"on":"")">首页</a>
+                    <a href="/photogf/NewsList" class="@(ViewBag.Title=="新闻中心"?"on":"")">新闻中心</a>
+                    <a href="/photogf/about" class="@(ViewBag.Title=="关于楚翔"?"on":"")">关于我们</a>
+                    <a href="/photogf/Portfolio" class="@((ViewBag.Title=="作品案例"||ViewBag.Title=="详细页")?"on":"")">作品案例</a>
+                    <a href="/Photogf/Contact" class="@(ViewBag.Title=="联系我们"?"on":"")">联系我们</a>
+                </div>
             </div>
-
-            <a class="elemadded responsive-link" href="#">Menu</a>
-
-            <nav class="menu">
-                <ul class="navigate-section">
-                    <li><a href="/photogf/index">首页 </a></li>
-                    <li><a href="/photogf/about">关于</a></li>
-                    <li><a href="/photogf/portfolio">作品</a></li>
-              <!--<li class="drop"><a href="#">其他<span></span></a>
-                        <ul class="dropdown">
-                            <li><a href="404-error.html">404 Error</a></li>
-                            <li><a href="500-error.html">500 Error</a></li>
-                            <li><a href="comming-soon.html">Coming Soon</a></li>
-                            <li><a href="faqs.html">Faq's</a></li>
-                            <li class="drop"><a href="#">Menu Level<span></span></a>
-                                <ul class="dropdown">
-                                    <li><a href="404-error.html">Level</a></li>
-                                    <li class="drop"><a href="#">Menu Level 2<span></span></a>
-                                        <ul class="dropdown">
-                                            <li><a href="404-error.html">Level 2</a></li>
-                                            <li><a href="comming-soon.html">Level 2</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>-->
-                    <li><a href="/photogf/contact">联系我们</a></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ul>
-            </nav>
-            <!-- End footer -->
-        </header>
-        <div id="content">
-            @RenderBody()
         </div>
-        <!-- End Content -->
+        @RenderBody()
+
+        <div class="footer">
+            <div class="container-main">
+                <div class="custom-us">
+                    <a href="https://wx.qq.com/" target="_blank" class="custom-us-01"></a>
+                    <a href="http://im.qq.com/pcqq/" class="custom-us-02" target="_blank"></a>
+                    <a href="https://weibo.com/" class="custom-us-03" target="_blank"></a>
+                    <a href="http://www.pengyou.com/" class="custom-us-04" target="_blank"></a>
+                </div>
+                <div class="copyright">
+                    电话：13187313650 &nbsp;&nbsp;地址：湖南省长沙市芙蓉中路新时代广场南栋1025
+                    <br>湘ICP备15006511号-1 &nbsp;&nbsp;版权归长沙楚翔摄影技术有限公司所有
+                </div>
+            </div>
+        </div>
     </div>
+    @RenderSection("scripts", required: false)
 </body>
-@RenderSection("fScripts", required: false)
 </html>

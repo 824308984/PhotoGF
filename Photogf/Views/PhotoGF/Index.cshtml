@@ -1,34 +1,9 @@
 ﻿
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Loyat.cshtml";
+    ViewBag.Title = "首页";
 }
 
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-    <title>首页</title>
-    <link rel="alternate icon" type="image/png" href="/viewAbout/images/favicon.ico">
-    <link rel="stylesheet" href="/viewAbout/css/iconfont.css" type="text/css" />
-    <link rel="stylesheet" href="/viewAbout/css/app.css" type="text/css" />
-</head>
-<body>
-    <div class="page">
-        <div class="header">
-            <div class="header-main">
-                <div class="logo">
-                    <a href="#"><img src="/viewAbout/images/logo.png" alt=""></a>
-                </div>
-                <div class="nav">
-                    <a href="/photogf/Index" class="on">首页</a>
-                    <a href="/photogf/NewsList">新闻中心</a>
-                    <a href="/photogf/about">关于我们</a>
-                    <a href="/photogf/Portfolio">作品案例</a>
-                    <a href="/Photogf/Contact">联系我们</a>
-                </div>
-            </div>
-        </div>
         <div class="focus">
             <div class="slides-box">
                 <ul class="slides">
@@ -156,94 +131,82 @@
                 </div>
             </div>
         </div>
-        <div class="footer">
-            <div class="container-main">
-                <div class="custom-us">
-                    <a href="https://wx.qq.com/" target="_blank" class="custom-us-01"></a>
-                    <a href="http://im.qq.com/pcqq/" class="custom-us-02" target="_blank"></a>
-                    <a href="https://weibo.com/" class="custom-us-03" target="_blank"></a>
-                    <a href="http://www.pengyou.com/" class="custom-us-04" target="_blank"></a>
-                </div>
-                <div class="copyright">
-                    电话：0731-8990-3285 &nbsp;&nbsp;地址：湖北省长沙市芙蓉中路新时代广场南栋1025
-                    <br>湘ICP备15006511号-1 &nbsp;&nbsp;版权归长沙楚翔摄影技术有限公司所有
-                </div>
-            </div>
-        </div>
-    </div>
-    <script src="/viewAbout/js/jquery.min.js"></script>
-    <script src="/viewAbout/js/poposlides.js"></script>
-    <script src="http://api.html5media.info/1.2.2/html5media.min.js"></script>
-    <script>
-        // 焦点图
-        $(".slides").poposlides({
-            pagination: true,
-            playspeed: 5000,
-            fadespeed: 1000
-        });
 
-        // slogn图
-        $('#slogan .hot-img').find('img').hover(function () {
-            var _this = $(this);
-            $('#slogan').find('.hot-sm').hide();
-            _this.siblings('.hot-sm').show();
-        })
-        Load = function () {
+    @section scripts{
 
+        <script src="/viewAbout/js/jquery.min.js"></script>
+        <script src="/viewAbout/js/poposlides.js"></script>
+        <script src="http://api.html5media.info/1.2.2/html5media.min.js"></script>
+        <script>
+            // 焦点图
+            $(".slides").poposlides({
+                pagination: true,
+                playspeed: 5000,
+                fadespeed: 1000
+            });
 
-            //产品
-            $('.product-list').hover(function () {
+            // slogn图
+            $('#slogan .hot-img').find('img').hover(function () {
                 var _this = $(this);
-                _this.find('.product-list-sm').stop().animate({ 'bottom': 0 }, 300);
-            },
-                function () {
+                $('#slogan').find('.hot-sm').hide();
+                _this.siblings('.hot-sm').show();
+            })
+            Load = function () {
+
+
+                //产品
+                $('.product-list').hover(function () {
                     var _this = $(this);
-                    _this.find('.product-list-sm').stop().animate({ 'bottom': '-160px' }, 300);
-                })
-        }
-
-        GetVideoList = function (obj) {
-            var id;
-            if (obj != 0)
-            {
-                id = $(obj).attr("rel");
-                $(".on").removeClass();
-                $(obj).addClass("on");
+                    _this.find('.product-list-sm').stop().animate({ 'bottom': 0 }, 300);
+                },
+                    function () {
+                        var _this = $(this);
+                        _this.find('.product-list-sm').stop().animate({ 'bottom': '-160px' }, 300);
+                    })
             }
-            else
-                id = 0;
 
-            $.post("/ajax/GetTopNVideoByProductType", { productTypeID: id, num: 4 }, function (data) {
-                $("#p1").empty();
-                $("#p2").empty();
-                console.log(data);
-                $.each(data, function (index, lt) {
-                    var $html = '<div class="product-list">' +
-                        '<img src= "' + lt.imgUrl + '" alt= "">' +
-                        '<div class="product-list-sm" style="display:block;">' +
-                        '<h3 class="text-center">' + lt.Title + '</h3>' +
-                        '<p>' + lt.Introduct + '</p>' +
-                        '<a href="/photogf/details/' + lt.id + '" class="iconfont icon-video" title="播放"></a></div>' +
-                        '</div>';
-                    if (index < 2)
-                        $("#p1").append($html);
-                    else
-                        $("#p2").append($html);
-                })
+            GetVideoList = function (obj) {
+                var id;
+                if (obj != 0) {
+                    id = $(obj).attr("rel");
+                    $(".on").removeClass();
+                    $(obj).addClass("on");
+                }
+                else
+                    id = 0;
+
+                $.post("/ajax/GetTopNVideoByProductType", { productTypeID: id, num: 4 }, function (data) {
+                    $("#p1").empty();
+                    $("#p2").empty();
+                    console.log(data);
+                    $.each(data, function (index, lt) {
+                        var $html = '<div class="product-list">' +
+                            '<img src= "' + lt.imgUrl + '" alt= "">' +
+                            '<div class="product-list-sm" style="display:block;">' +
+                            '<h3 class="text-center">' + lt.Title + '</h3>' +
+                            '<p>' + lt.Introduct + '</p>' +
+                            '<a href="/photogf/details/' + lt.id + '" class="iconfont icon-video" title="播放"></a></div>' +
+                            '</div>';
+                        if (index < 2)
+                            $("#p1").append($html);
+                        else
+                            $("#p2").append($html);
+                    })
+                    Load();
+                }, "json");
+            }
+
+            $(function () {
+                $.post("/ajax/GetProductType", function (data) {
+                    $.each(data, function (index, lt) {
+                        if (index < 5)
+                            $("#AllType").append('<a href="javascript:void(0)" onclick="GetVideoList(this)" rel="' + lt.Value + '">' + lt.Name + '</a>')
+                    });
+                    GetVideoList(0);
+                }, "json")
                 Load();
-            }, "json");
-        }
+            })
+        </script>
+    }
 
-        $(function () {
-            $.post("/ajax/GetProductType", function (data) {
-                $.each(data, function (index, lt) {
-                    if (index < 5)
-                        $("#AllType").append('<a href="javascript:void(0)" onclick="GetVideoList(this)" rel="' + lt.Value + '">' + lt.Name + '</a>')
-                });
-                GetVideoList(0);
-            }, "json")
-            Load();
-        })
-    </script>
-</body>
-</html>
+
