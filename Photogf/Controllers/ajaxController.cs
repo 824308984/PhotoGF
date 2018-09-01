@@ -31,7 +31,34 @@ namespace Photogf.Controllers
             Session["Login"] = user;
             return "1";
         }
-
+        [Power]
+        [HttpPost]
+        public string ModifyPwd(string OldPwd,string NewPwd1,string NewPwd2)
+        {
+            if (string.IsNullOrEmpty(OldPwd) || OldPwd.Length < 6)
+            {
+                return "0";
+            }
+            if (string.IsNullOrEmpty(NewPwd1) || OldPwd.Length < 6)
+            {
+                return "0";
+            }
+            if (NewPwd1 != NewPwd2)
+            {
+                return "0";
+            }
+            Manager user = (Manager)Session["Login"];
+            if (user.password != common.unity.MD5(OldPwd))
+            {
+                return "0";
+            }
+            Entities entities = new Entities();
+            var modifyUser = entities.Manager.FirstOrDefault(db => db.userName == user.userName);
+            modifyUser.password = common.unity.MD5(NewPwd1);
+            entities.SaveChanges();
+            Session.Clear();
+            return "1";
+        }
         [HttpPost]
         [Power]
         public string UpdataIndexVideo(string path)

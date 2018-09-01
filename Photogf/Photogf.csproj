@@ -974,6 +974,7 @@
     <Content Include="Scripts\i18n\angular-locale_zu.js" />
     <Content Include="Scripts\imgshow\jquery.poptrox.js" />
     <Content Include="Scripts\imgshow\jquery.poptrox.min.js" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\kindeditor\kindeditor-all-min.js" />
@@ -1349,6 +1350,7 @@
     <Content Include="Views\PhotoGF\Details.cshtml" />
     <Content Include="Views\PhotoGF\NewsList.cshtml" />
     <Content Include="Views\PhotoGF\NewsDetail.cshtml" />
+    <Content Include="Views\Admin\ModifyPassword.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

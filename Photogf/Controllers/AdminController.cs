@@ -95,5 +95,10 @@ namespace Photogf.Controllers
             ViewBag.model = model;
             return View();
         }
+        [Power]
+        public ActionResult ModifyPassword()
+        {
+            return View();
+        }
     }
 }
