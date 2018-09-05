@@ -33,7 +33,7 @@ namespace Photogf.Controllers
         }
         [Power]
         [HttpPost]
-        public string ModifyPwd(string OldPwd,string NewPwd1,string NewPwd2)
+        public string ModifyPwd(string OldPwd, string NewPwd1, string NewPwd2)
         {
             if (string.IsNullOrEmpty(OldPwd) || OldPwd.Length < 6)
             {
@@ -423,7 +423,98 @@ namespace Photogf.Controllers
         }
         #endregion
 
+        [Power]
+        [HttpPost]
+        public string AddLink(string title, string link)
+        {
+            Entities dbHelper = new Entities();
+            frendLink fLinkModel = dbHelper.frendLink.OrderByDescending(db => db.Sort).FirstOrDefault();
+            int upID = 0;
+            int sort = 1;
+            if (fLinkModel != null)
+            {
+                upID = fLinkModel.ID;
+                sort = fLinkModel.Sort + 1;
+            }
+            frendLink newFrendLinkModel = new frendLink()
+            {
+                Link = link,
+                Title = title,
+                UpID = upID,
+                Sort = sort,
+                DownID = 999
+            };
+            dbHelper.frendLink.Add(newFrendLinkModel);
+            dbHelper.SaveChanges();
+            if (fLinkModel != null)
+            {
+                fLinkModel.DownID = newFrendLinkModel.ID;
+                dbHelper.SaveChanges();
+            }
+            return "1";
+        }
+        [Power]
+        [HttpPost]
+        public string RemoveOrChangeSort(int status, int id)
+        {
+            Entities dbHelper = new Entities();
+            frendLink frendLinkModel = dbHelper.frendLink.FirstOrDefault(db => db.ID == id);
+            if (frendLinkModel == null)
+                return "0";
+            frendLink UpFModel = dbHelper.frendLink.FirstOrDefault(db => db.DownID == id);
+            frendLink DownFModel = dbHelper.frendLink.FirstOrDefault(db => db.UpID == id);
+            if (status == 2)
+            {
+                if (UpFModel != null)
+                {
+                    UpFModel.DownID = frendLinkModel.DownID;
+                }
+                if (DownFModel != null)
+                {
+                    DownFModel.UpID = frendLinkModel.UpID;
+                }
+                dbHelper.frendLink.Remove(frendLinkModel);
+                dbHelper.SaveChanges();
+                return "1";
+            }
+            if (status == 0)
+            {
+                if (UpFModel != null)
+                {
+                    string title = frendLinkModel.Title;
+                    string link = frendLinkModel.Link;
+                    frendLinkModel.Title = UpFModel.Title;
+                    frendLinkModel.Link = UpFModel.Link;
+                    UpFModel.Title = title;
+                    UpFModel.Link = link;
+                    dbHelper.SaveChanges();
+                    return "1";
+                }
+            }
+            if (status == 1)
+            {
+                if (DownFModel != null)
+                {
+                    string title = frendLinkModel.Title;
+                    string link = frendLinkModel.Link;
+                    frendLinkModel.Title = DownFModel.Title;
+                    frendLinkModel.Link = DownFModel.Link;
+                    DownFModel.Title = title;
+                    DownFModel.Link = link;
+                    dbHelper.SaveChanges();
+                    return "1";
+                }
+            }
+            return "0";
 
+        }
 
+        [HttpPost]
+        public string GetFrendLinkList()
+        {
+            Entities dbHelper = new Entities();
+            List<frendLink> frendLinkList = dbHelper.frendLink.ToList();
+            return JsonConvert.SerializeObject(frendLinkList);
+        }
     }
 }

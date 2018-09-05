@@ -11,12 +11,23 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="fileName" Type="varchar" MaxLength="100" />
-          <Property Name="filePath" Type="varchar" MaxLength="100" />
+          <Property Name="filePath" Type="varchar" MaxLength="500" />
           <Property Name="fileTitle" Type="varchar" MaxLength="100" />
           <Property Name="fileContent" Type="text" />
           <Property Name="addTime" Type="datetime" Nullable="false" />
           <Property Name="fileType" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="productID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="frendLink">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Link" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="UpID" Type="int" Nullable="false" />
+          <Property Name="DownID" Type="int" Nullable="false" />
+          <Property Name="Sort" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Manager">
           <Key>
@@ -60,6 +71,7 @@
         </EntityType>
         <EntityContainer Name="PhotographModelStoreContainer">
           <EntitySet Name="fileManager" EntityType="Self.fileManager" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="frendLink" EntityType="Self.frendLink" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Manager" EntityType="Self.Manager" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="News" EntityType="Self.News" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="product" EntityType="Self.product" Schema="dbo" store:Type="Tables" />
@@ -75,7 +87,7 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="fileName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="filePath" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="filePath" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="fileTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="fileContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="addTime" Type="DateTime" Nullable="false" Precision="3" />
@@ -118,6 +130,7 @@
           <EntitySet Name="product" EntityType="Self.product" />
           <EntitySet Name="productType" EntityType="Self.productType" />
           <EntitySet Name="News" EntityType="PhotographModel.News" />
+          <EntitySet Name="frendLink" EntityType="PhotographModel.frendLink" />
         </EntityContainer>
         <EntityType Name="News">
           <Key>
@@ -128,6 +141,17 @@
           <Property Name="Title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="LastTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="frendLink">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Link" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Sort" Type="Int32" Nullable="false" />
+          <Property Name="UpID" Type="Int32" Nullable="false" />
+          <Property Name="DownID" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -190,6 +214,18 @@
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Author" ColumnName="Author" />
                 <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="frendLink">
+            <EntityTypeMapping TypeName="PhotographModel.frendLink">
+              <MappingFragment StoreEntitySet="frendLink">
+                <ScalarProperty Name="DownID" ColumnName="DownID" />
+                <ScalarProperty Name="UpID" ColumnName="UpID" />
+                <ScalarProperty Name="Sort" ColumnName="Sort" />
+                <ScalarProperty Name="Link" ColumnName="Link" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

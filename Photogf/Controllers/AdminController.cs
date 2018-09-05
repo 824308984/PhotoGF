@@ -96,6 +96,14 @@ namespace Photogf.Controllers
             return View();
         }
         [Power]
+        public ActionResult FrendLinkManage()
+        {
+            Entities dbHelper = new Entities();
+            List<frendLink> linkList = dbHelper.frendLink.OrderBy(db => db.Sort).ToList();
+            ViewBag.links = linkList;
+            return View();
+        }
+        [Power]
         public ActionResult ModifyPassword()
         {
             return View();

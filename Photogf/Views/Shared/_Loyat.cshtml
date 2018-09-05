@@ -8,6 +8,17 @@
     <link rel="stylesheet" href="/viewAbout/css/iconfont.css" type="text/css" />
     <link rel="stylesheet" href="/viewAbout/css/app.css" type="text/css" />
     <script src="/viewAbout/js/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $.post("/ajax/GetFrendLinkList", function (e) {
+                var resonList = JSON.parse(e);
+                $("#frendLinkGroup").html("");
+                $.each(resonList, function (index, lt) {
+                    $("#frendLinkGroup").append('<a href="' + lt.Link + '" target="_blank" >' + lt.Title + '</a>');
+                })
+            })
+        })
+    </script>
 </head>
 <body>
     <div class="page">
@@ -30,10 +41,10 @@
         <div class="footer">
             <div class="container-main">
                 <div class="custom-us">
-                    <a href="https://wx.qq.com/" target="_blank" class="custom-us-01"></a>
+                    @*<a href="https://wx.qq.com/" target="_blank" class="custom-us-01"></a>
                     <a href="http://im.qq.com/pcqq/" class="custom-us-02" target="_blank"></a>
                     <a href="https://weibo.com/" class="custom-us-03" target="_blank"></a>
-                    <a href="http://www.pengyou.com/" class="custom-us-04" target="_blank"></a>
+                    <a href="http://www.pengyou.com/" class="custom-us-04" target="_blank"></a>*@
                 </div>
                 <div class="copyright">
                     电话：13187313650 &nbsp;&nbsp;地址：湖南省长沙市芙蓉中路新时代广场南栋1025

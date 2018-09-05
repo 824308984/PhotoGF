@@ -1266,6 +1266,9 @@
     <Compile Include="Models\fileManager.cs">
       <DependentUpon>DataBase.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\frendLink.cs">
+      <DependentUpon>DataBase.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Manager.cs">
       <DependentUpon>DataBase.tt</DependentUpon>
     </Compile>
@@ -1351,6 +1354,7 @@
     <Content Include="Views\PhotoGF\NewsList.cshtml" />
     <Content Include="Views\PhotoGF\NewsDetail.cshtml" />
     <Content Include="Views\Admin\ModifyPassword.cshtml" />
+    <Content Include="Views\Admin\FrendLinkManage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
