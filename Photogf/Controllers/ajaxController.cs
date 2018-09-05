@@ -513,7 +513,7 @@ namespace Photogf.Controllers
         public string GetFrendLinkList()
         {
             Entities dbHelper = new Entities();
-            List<frendLink> frendLinkList = dbHelper.frendLink.ToList();
+            List<frendLink> frendLinkList = dbHelper.frendLink.OrderBy(db=>db.Sort).ToList();
             return JsonConvert.SerializeObject(frendLinkList);
         }
     }
